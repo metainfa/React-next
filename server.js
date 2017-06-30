@@ -3,6 +3,16 @@ const next = require('next')
 const LRUCache = require('lru-cache')
 
 const dev = process.env.NODE_ENV !== 'production'
+
+// For the development version, we'll use React.
+// Because, it support react hot loading and so on.
+if (!dev) {
+  moduleAlias.addAlias('react', 'inferno-compat')
+  moduleAlias.addAlias('react-dom/server', 'inferno-server')
+  moduleAlias.addAlias('react-dom', 'inferno-compat')
+}
+
+
 const app = next({ dir: '.', dev })
 const handle = app.getRequestHandler()
 
