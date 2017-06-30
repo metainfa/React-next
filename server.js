@@ -13,38 +13,40 @@ const ssrCache = new LRUCache({
 })
 
 app.prepare()
-.then(() => {
-  const server = express()
+  .then(() => {
+    const server = express()
 
-  // Use the `renderAndCache` utility defined below to serve pages
-  server.get('/', (req, res) => {
-    renderAndCache(req, res, '/')
-  })
+    server.listen(3000, (err) => {
+      if (err) throw err
+      console.log('> Ready on http://localhost:3000')
+    })
 
-  server.get('/blog/:id', (req, res) => {
-    const queryParams = { id: req.params.id }
-    renderAndCache(req, res, '/blog', queryParams)
-  })
+    // Use the `renderAndCache` utility defined below to serve pages
+    server.get('/', (req, res) => {
+      renderAndCache(req, res, '/')
+    })
 
-  server.get('*', (req, res) => {
-    return handle(req, res)
-  })
+    server.get('/blog/:id', (req, res) => {
+      const queryParams = { id: req.params.id }
+      renderAndCache(req, res, '/blog', queryParams)
+    })
 
-  server.listen(3000, (err) => {
-    if (err) throw err
-    console.log('> Ready on http://localhost:3000')
+    server.get('*', (req, res) => {
+      return handle(req, res)
+    })
+
+
   })
-})
 
 /*
  * NB: make sure to modify this to take into account anything that should trigger
  * an immediate page change (e.g a locale stored in req.session)
  */
-function getCacheKey (req) {
+function getCacheKey(req) {
   return `${req.url}`
 }
 
-function renderAndCache (req, res, pagePath, queryParams) {
+function renderAndCache(req, res, pagePath, queryParams) {
   const key = getCacheKey(req)
 
   // If we have a page in the cache, let's serve it
