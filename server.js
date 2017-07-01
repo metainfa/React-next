@@ -1,6 +1,7 @@
 const express = require('express')
 const next = require('next')
 const LRUCache = require('lru-cache')
+const moduleAlias = require('module-alias')
 
 const dev = process.env.NODE_ENV !== 'production'
 
