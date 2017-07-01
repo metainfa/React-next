@@ -5,16 +5,13 @@ const LRUCache = require('lru-cache')
 const dev = process.env.NODE_ENV !== 'production'
 
 
-
 // For the development version, we'll use React.
 // Because, it support react hot loading and so on.
-
-// const moduleAlias = require('module-alias')
-// if (!dev) {
-//   moduleAlias.addAlias('react', 'inferno-compat')
-//   moduleAlias.addAlias('react-dom/server', 'inferno-server')
-//   moduleAlias.addAlias('react-dom', 'inferno-compat')
-// }
+const moduleAlias = require('module-alias')
+if (!dev) {
+  moduleAlias.addAlias('react', 'preact-compat')
+  moduleAlias.addAlias('react-dom', 'preact-compat')
+}
 
 
 const app = next({ dir: '.', dev })
